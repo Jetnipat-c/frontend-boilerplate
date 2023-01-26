@@ -1,4 +1,4 @@
-export const truncateAddress = (address?: string, length: number = 4) => {
+const truncateAddress = (address?: string, length: number = 4) => {
   if (length === 99) {
     return address;
   }
@@ -7,5 +7,8 @@ export const truncateAddress = (address?: string, length: number = 4) => {
     const right = address.slice(address.length - length, address.length);
     return `${left}...${right}`;
   }
-  return "";
+  return '';
 };
+
+const commonService = { truncateAddress };
+export default commonService;

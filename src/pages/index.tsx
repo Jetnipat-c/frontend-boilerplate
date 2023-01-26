@@ -1,20 +1,20 @@
-import { insertProduct, insertProducts, Product } from "@/app/store/productSlice";
-import { useQuery } from "@tanstack/react-query";
-import httpClient from "@/app/utils/httpClient";
-import { useDispatch } from "react-redux";
-import { Button } from "@mui/material";
-import { useState } from "react";
-import Link from "next/link";
+import { insertProduct, insertProducts, Product } from '@/app/store/productSlice';
+import { useQuery } from '@tanstack/react-query';
+import httpClient from '@/app/utils/httpClient';
+import { useDispatch } from 'react-redux';
+import { Button } from '@mui/material';
+import { useState } from 'react';
+import Link from 'next/link';
 
 export default function HomePage() {
   const dispatch = useDispatch();
   const [product, setProduct] = useState<Product>({
     id: 0,
-    title: "",
+    title: '',
     price: 0,
-    description: "",
-    category: "",
-    image: "",
+    description: '',
+    category: '',
+    image: '',
     rating: {
       rate: 0,
       count: 0,
@@ -25,9 +25,9 @@ export default function HomePage() {
     isLoading,
     isSuccess,
   } = useQuery<Product[]>({
-    queryKey: ["product"],
+    queryKey: ['product'],
     queryFn: async () => {
-      const response = await httpClient.get("/products");
+      const response = await httpClient.get('/products');
       return response.data;
     },
   });
@@ -75,20 +75,30 @@ export default function HomePage() {
         <input
           placeholder="rate"
           value={product.rating.rate}
-          onChange={(e) => setProduct({ ...product, rating: { ...product.rating, rate: +e.target.value } })}
+          onChange={(e) =>
+            setProduct({
+              ...product,
+              rating: { ...product.rating, rate: +e.target.value },
+            })
+          }
         />
         <input
           placeholder="count"
           value={product.rating.count}
-          onChange={(e) => setProduct({ ...product, rating: { ...product.rating, count: +e.target.value } })}
+          onChange={(e) =>
+            setProduct({
+              ...product,
+              rating: { ...product.rating, count: +e.target.value },
+            })
+          }
         />
         <Button onClick={() => dispatch(insertProduct(product))} className="bg-red-700" variant="contained">
           Insert product
         </Button>
       </div>
       {isLoading && <div>Loading...</div>}
-      {productResponse?.map((product) => (
-        <div key={product.id}>{product.title}</div>
+      {productResponse?.map((productData) => (
+        <div key={productData.id}>{productData.title}</div>
       ))}
 
       <Button

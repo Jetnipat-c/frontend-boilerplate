@@ -1,7 +1,6 @@
-import createCache from "@emotion/cache";
+// eslint-disable-next-line import/no-extraneous-dependencies
+import createCache from '@emotion/cache';
 
-const createEmotionCache = () => {
-  return createCache({ key: "css", prepend: true });
-};
+const createEmotionCache = () => createCache({ key: 'css', prepend: true });
 
 export default createEmotionCache;
