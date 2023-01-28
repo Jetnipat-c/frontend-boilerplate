@@ -1,6 +1,6 @@
 import { useEvmNativeBalance } from '@moralisweb3/next';
 
-function HomePage() {
+function ProfilePage() {
   const address = '0x32d11438Db681c16Cfa8FcA99B8E5c647282a39d';
   const { data: nativeBalance } = useEvmNativeBalance({ address });
   return (
@@ -11,4 +11,4 @@ function HomePage() {
   );
 }
 
-export default HomePage;
+export default ProfilePage;

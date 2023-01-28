@@ -1,13 +1,15 @@
-import { insertProduct, insertProducts, Product } from '@/app/store/productSlice';
-import { useQuery } from '@tanstack/react-query';
-import httpClient from '@/app/utils/httpClient';
-import { useDispatch } from 'react-redux';
+import { fetchProducts, insertProduct, insertProducts, Product } from '@/app/store/productSlice';
+// import { useQuery } from '@tanstack/react-query';
+// import httpClient from '@/app/utils/httpClient';
+import { useSelector } from 'react-redux';
 import { Button } from '@mui/material';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import { RootState, useAppDispatch } from '@/app/store/store';
 
 export default function HomePage() {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
+  const { products: productResponse, loading: isLoading } = useSelector((state: RootState) => state.product);
   const [product, setProduct] = useState<Product>({
     id: 0,
     title: '',
@@ -20,21 +22,22 @@ export default function HomePage() {
       count: 0,
     },
   });
-  const {
-    data: productResponse,
-    isLoading,
-    isSuccess,
-  } = useQuery<Product[]>({
-    queryKey: ['product'],
-    queryFn: async () => {
-      const response = await httpClient.get('/products');
-      return response.data;
-    },
-  });
 
-  if (isSuccess) {
-    dispatch(insertProducts(productResponse));
-  }
+  // const {
+  //   data: productResponse,
+  //   isLoading,
+  //   isSuccess,
+  // } = useQuery<Product[]>({
+  //   queryKey: ['product'],
+  //   queryFn: async () => {
+  //     const response = await httpClient.get('/products');
+  //     return response.data;
+  //   },
+  // });
+
+  // if (isSuccess) {
+  //   dispatch(insertProducts(productResponse));
+  // }
 
   const handleInsertProducts = () => {
     if (productResponse) {
@@ -42,9 +45,19 @@ export default function HomePage() {
     }
   };
 
+  useEffect(() => {
+    dispatch(fetchProducts());
+  }, []);
+
   return (
     <div>
-      <h1>Test lib</h1>
+      <div>Test lib</div>
+      <button type="button" className="border-2 border-red-200">
+        Border
+      </button>
+      <Button variant="outlined" className="border-4 border-white">
+        Border MUI
+      </Button>
       <div className="grid grid-cols-1 max-w-sm">
         <input placeholder="id" value={product.id} onChange={(e) => setProduct({ ...product, id: +e.target.value })} />
         <input

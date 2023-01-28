@@ -1,8 +1,7 @@
 import { RootState } from '@/app/store/store';
 import { useSelector } from 'react-redux';
 
-export default function property() {
-  // eslint-disable-next-line react-hooks/rules-of-hooks
+export default function PropertyPage() {
   const count = useSelector((state: RootState) => state.product.products);
   return (
     <div>

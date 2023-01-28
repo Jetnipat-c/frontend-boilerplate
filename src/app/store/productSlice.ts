@@ -1,5 +1,5 @@
-import type { PayloadAction } from '@reduxjs/toolkit';
-import { createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, PayloadAction, createSlice } from '@reduxjs/toolkit';
+import httpClient from '../utils/httpClient';
 
 export interface Product {
   id: number;
@@ -19,6 +19,24 @@ export interface ProductState {
   products: Product[];
   loading: boolean;
 }
+
+export const fetchProducts = createAsyncThunk('product/fetchList', async () => {
+  const response = await httpClient.get('/products');
+  return response.data;
+});
+
+const extraReducers = {
+  [fetchProducts.pending.type]: (state: ProductState) => {
+    state.loading = true;
+  },
+  [fetchProducts.fulfilled.type]: (state: ProductState, action: PayloadAction<Product[]>) => {
+    state.loading = false;
+    state.products = action.payload;
+  },
+  [fetchProducts.rejected.type]: (state: ProductState) => {
+    state.loading = false;
+  },
+};
 
 const initialState: ProductState = {
   product: {
@@ -49,9 +67,9 @@ export const productSlice = createSlice({
       state.products = action.payload;
     },
   },
+  extraReducers,
 });
 
 // Action creators are generated for each case reducer function
 export const { insertProduct, insertProducts } = productSlice.actions;
-
 export default productSlice.reducer;
